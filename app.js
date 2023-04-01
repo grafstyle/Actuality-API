@@ -1,12 +1,9 @@
-import express from "express";
+import { App, Router } from "./src/API.js";
+import { get } from "./middleware/Users.js";
 
-const app = express();
-const port = 3500;
+const app = new App();
+const router = new Router();
 
-app.get("/", (req, res) => {
-  res.send("Hello world!");
-});
+let allDataUsers = await get();
 
-app.listen(port, () => {
-  console.log("Open in http://localhost:" + port);
-});
+router.addJSON("/Users", allDataUsers);
