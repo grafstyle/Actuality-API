@@ -1,3 +1,5 @@
+"use strict";
+
 import { MongoClient } from "mongodb";
 
 let conn;

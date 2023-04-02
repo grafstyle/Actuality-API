@@ -1,9 +1,9 @@
 import { App, Router } from "./src/API.js";
-import { get } from "./middleware/Users.js";
+import { getUser } from "./controller/Users.js";
 
 const app = new App();
 const router = new Router();
 
-let allDataUsers = await get();
+let allDataUsers = await getUser();
 
 router.addJSON("/Users", allDataUsers);

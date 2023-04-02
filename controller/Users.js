@@ -1,13 +1,13 @@
 "use strict";
-import { connect, close } from "../src/DB.js";
-export let table = connect().collection("Users");
+import { connect } from "../src/DB.js";
+export const table = connect().collection("Users");
 
-export async function get(data) {
+export async function getUser(data) {
   if (data == undefined) return table.find().toArray();
   return table.find(data).toArray();
 }
 
-export async function getOne(data) {
+export async function getOneUser(data) {
   if (data == undefined) return table.findOne();
   return table.findOne(data);
 }
