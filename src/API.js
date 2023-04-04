@@ -38,11 +38,7 @@ export class Router {
 
   addJSON(url, template) {
     app.get(url, (req, res) => {
-      if (Array.isArray(template)) {
-        template.forEach((elem) => {
-          res.json(req.body == undefined ? elem : (req.body += elem));
-        });
-      } else res.json(template);
+      res.json(template);
     });
   }
 }
