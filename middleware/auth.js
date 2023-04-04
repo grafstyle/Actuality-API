@@ -1,23 +1,10 @@
-import * as decode from "jwt-simple";
-import moment from "moment/moment.js";
-const secret = "como_obtuviste_el_texto";
+import jwt from "jwt-simple";
+export const secret_key = "java_best_languaje";
 
-export default function getSecretKey(req, res, next) {
-  if (res.status(200)) res.status(200).send("hola");
-  if (!req.headers.authorization)
-    return res
-      .status(403)
-      .send({ message: "The request don't have a autentication header" });
-  else {
-    let token = req.headers.authorization.replace(/['"]+/g, "");
-    let payload = decode(token, secret);
-    try {
-      if (payload.exp > moment().unix())
-        return res.status(401).send({ message: "The token was expired" });
-    } catch (e) {
-      return res.status(404).send({ message: "The token is not valid" });
-    }
-    req.user = payload;
-    next();
-  }
+export function encode(json) {
+  return jwt.encode(json, secret_key, "HS256");
+}
+
+export function decode(encodedJSON) {
+  return jwt.decode(encodedJSON, secret_key, true);
 }
