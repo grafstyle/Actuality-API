@@ -1,13 +1,15 @@
 "use strict";
 
-export const UsersSchema = {
+const UsersSchema = {
   email: String,
   name: String,
   url_name: String,
-  img: Blob,
-  portrait: Blob,
+  img: String,
+  portrait: String,
   bio: String,
   followers: Array,
   followed: Array,
   Joined: String,
 };
+
+export default UsersSchema;
