@@ -1,3 +1,5 @@
+// import http from 'http'
+import cors from "cors";
 import express from "express";
 
 const app = express();
@@ -14,6 +16,14 @@ export class App {
   }
 
   change(...args) {
+    let corsOpt = {
+      origin: "*",
+      methods: "GET, HEAD, OPTIONS , POST, PUT",
+      allowedHeaders:
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+      credentials: true,
+    };
+
     app.get("/", (req, res) => {
       if (args.length > 0) {
         args.forEach((template) => {
@@ -26,6 +36,8 @@ export class App {
     app.listen(port, () => {
       console.log("Open in http://localhost:" + port);
     });
+
+    app.use(cors(corsOpt));
   }
 }
 
