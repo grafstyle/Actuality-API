@@ -16,3 +16,34 @@ export async function getUsers(data) {
   dataRet = await table.find(data).toArray();
   return encode(dataRet);
 }
+
+/**
+ * To add data in users
+ * @param { UserSchema } data
+ * @returns
+ */
+export async function addUser(data) {
+  if (data == undefined) return;
+  await table.insertOne(data);
+}
+
+/**
+ * To update data in users
+ * @param { number } inId
+ * @param { UserSchema } data
+ * @returns
+ */
+export async function updateUser(inId, data) {
+  if ((data == undefined && inId == undefined) || inId < 0) return;
+  await table.updateOne({ id: inId }, data);
+}
+
+/**
+ * To delete data in users
+ * @param { number } idToDelete
+ * @returns
+ */
+export async function deleteUser(idToDelete) {
+  if (idToDelete == undefined || idToDelete < 0) return;
+  await table.deleteOne({ id: idToDelete });
+}
