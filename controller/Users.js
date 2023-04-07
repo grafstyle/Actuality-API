@@ -1,10 +1,15 @@
 "use strict";
-import { encode } from "../middleware/auth.js";
+import { decode, encode } from "../middleware/auth.js";
 import { connect } from "../src/DB.js";
 import UserSchema from "../models/Users.js";
 export const table = connect().collection("Users");
 
 let dataRet;
+
+export async function getLastUserID() {
+  dataRet = await decode(await getUsers());
+  return encode(dataRet[dataRet.length - 1]["id"]);
+}
 
 /**
  * To get data of multiple users
@@ -23,8 +28,26 @@ export async function getUsers(data) {
  * @returns
  */
 export async function addUser(data) {
+  let msg,
+    jsonToAdd = {};
   if (data == undefined) return;
-  await table.insertOne(data);
+  else {
+    if (data.id == undefined)
+      jsonToAdd["id"] = decode(await getLastUserID()) + 1;
+    Object.keys(UserSchema).forEach((keyOfSchema) => {
+      Object.keys(data).forEach(async (key) => {
+        if (key == keyOfSchema) jsonToAdd[key] = data[key];
+        else jsonToAdd[keyOfSchema] = null;
+      });
+    });
+  }
+  await table
+    .insertOne(jsonToAdd)
+    .then(() => {
+      msg = "Success";
+    })
+    .catch((err) => (msg = err));
+  return msg;
 }
 
 /**
