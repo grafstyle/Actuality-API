@@ -47,4 +47,24 @@ export class Router {
       res.json(template);
     });
   }
+
+  post(url) {
+    app.post(url, (req, res) => {
+      res.json(req.body);
+    });
+  }
+
+  update(url) {
+    app.put(url, (req, res) => {
+      const { id } = req.params;
+      res.json(req.body);
+    });
+  }
+
+  delete(url) {
+    app.delete(url, (req, res) => {
+      const { id } = req.params;
+      res.json({ deleted: id });
+    });
+  }
 }
