@@ -42,13 +42,7 @@ export class App {
 }
 
 export class Router {
-  add(url, template) {
-    app.get(url, (req, res) => {
-      res.send(template);
-    });
-  }
-
-  addJSON(url, template) {
+  get(url, template) {
     app.get(url, (req, res) => {
       res.json(template);
     });
