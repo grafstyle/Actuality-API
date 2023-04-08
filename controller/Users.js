@@ -30,7 +30,7 @@ export async function getUsers(data) {
 export async function addUser(data) {
   let msg;
   if (data == undefined) return;
-  if (data.id == undefined) data.id = decode(await getLastUserID());
+  if (data.id == undefined) data.id = decode(await getLastUserID()) + 1;
   await table
     .insertOne(data)
     .then(() => {
