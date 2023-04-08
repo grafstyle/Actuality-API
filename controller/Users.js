@@ -38,6 +38,7 @@ export async function addUser(data) {
       jsonToAdd["id"] = decode(await getLastUserID()) + 1;
     Object.keys(UserSchema).forEach((keyOfSchema) => {
       Object.keys(data).forEach(async (key) => {
+        if (keyOfSchema == "id") return;
         if (key == keyOfSchema) jsonToAdd[key] = data[key];
         else jsonToAdd[keyOfSchema] = null;
       });
