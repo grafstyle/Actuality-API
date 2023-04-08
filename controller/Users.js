@@ -28,11 +28,21 @@ export async function getUsers(data) {
  * @returns
  */
 export async function addUser(data) {
-  let msg;
+  let msg,
+    jsonToAdd = {};
   if (data == undefined) return;
-  if (data.id == undefined) data.id = decode(await getLastUserID()) + 1;
+  else {
+    if (data.id == undefined)
+      jsonToAdd["id"] = decode(await getLastUserID()) + 1;
+    Object.keys(UserSchema).forEach((keyOfSchema) => {
+      Object.keys(data).forEach(async (key) => {
+        if (key == keyOfSchema) jsonToAdd[key] = data[key];
+        else jsonToAdd[keyOfSchema] = null;
+      });
+    });
+  }
   await table
-    .insertOne(data)
+    .insertOne(jsonToAdd)
     .then(() => {
       msg = "Success";
     })
