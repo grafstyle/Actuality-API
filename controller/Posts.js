@@ -1,0 +1,89 @@
+"use strict";
+
+import { decode, encode } from "../middleware/auth.js";
+import { connect } from "../src/DB.js";
+import PostSchema from "../models/Posts.js";
+export const table = connect().collection("Posts");
+
+let dataRet;
+
+export async function getLastPostID() {
+  dataRet = await decode(await getPosts());
+  if (dataRet.length == 0) return encode(0);
+  return encode(dataRet[dataRet.length - 1]["id"]);
+}
+
+/**
+ * To get data of multiple posts
+ * @param { PostSchema | undefined } data
+ * @returns encoded posts
+ */
+export async function getPosts(data) {
+  if (data == undefined) data = {};
+  dataRet = await table.find(data).toArray();
+  return encode(dataRet);
+}
+
+/**
+ * To add data in posts
+ * @param { PostSchema } data
+ * @returns
+ */
+export async function addPost(data) {
+  let msg,
+    jsonToAdd = {};
+  if (data == undefined || Object.keys(data).length == 0)
+    throw new RangeError("The data is empty or undefined.");
+  else {
+    if (data.id == undefined)
+      jsonToAdd["id"] = decode(await getLastPostID()) + 1;
+    Object.keys(PostSchema).forEach((keyOfSchema) => {
+      Object.keys(data).forEach(async (key) => {
+        if (key == keyOfSchema) jsonToAdd[key] = data[key];
+        else jsonToAdd[keyOfSchema] = null;
+      });
+    });
+  }
+  await table
+    .insertOne(jsonToAdd)
+    .then(() => {
+      msg = "Success";
+    })
+    .catch((err) => (msg = err));
+  return msg;
+}
+
+/**
+ * To update data in posts
+ * @param { number } inId
+ * @param { PostSchema } data
+ * @returns
+ */
+export async function updatePost(inId, data) {
+  let msg;
+  if (data == undefined || Object.keys(data).length == 0)
+    throw new RangeError("The data is empty or undefined.");
+  await table
+    .updateOne({ id: inId }, { $set: data })
+    .then(() => {
+      msg = "Success";
+    })
+    .catch((err) => (msg = err));
+  return msg;
+}
+
+/**
+ * To delete data in posts
+ * @param { number } idToDelete
+ * @returns
+ */
+export async function deletePost(idToDelete) {
+  let msg;
+  await table
+    .deleteOne({ id: idToDelete })
+    .then(() => {
+      msg = "Success";
+    })
+    .catch((err) => (msg = err));
+  return msg;
+}
