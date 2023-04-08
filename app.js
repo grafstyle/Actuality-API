@@ -1,6 +1,6 @@
 import { App, Router } from "./src/API.js";
 import { decode } from "./middleware/auth.js";
-import { getUsers } from "./controller/Users.js";
+import { addUser, getUsers } from "./controller/Users.js";
 
 const app = new App();
 const router = new Router();
@@ -14,3 +14,4 @@ allDataUsers.forEach((elem) => {
 });
 
 router.get("/Users", allDataUsers);
+router.post("/Users", addUser);

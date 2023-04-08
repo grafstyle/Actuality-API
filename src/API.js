@@ -1,3 +1,5 @@
+import bodyParser from "body-parser";
+import { decode } from "../middleware/auth.js";
 import cors from "cors";
 import express from "express";
 
@@ -5,7 +7,6 @@ const app = express();
 const port = 3500;
 
 export class App {
-
   constructor(...args) {
     if (args.length == 0) this.change();
     else {
@@ -24,6 +25,8 @@ export class App {
       credentials: true,
     };
 
+    let jsonParser = bodyParser.json();
+
     app.get("/", (req, res) => {
       if (args.length > 0) {
         args.forEach((template) => {
@@ -36,7 +39,7 @@ export class App {
     app.listen(port, () => {
       console.log("Open in http://localhost:" + port);
     });
-    app.use(cors(corsOpt));
+    app.use(cors(corsOpt), jsonParser);
   }
 }
 export class Router {
@@ -46,9 +49,9 @@ export class Router {
     });
   }
 
-  post(url) {
+  post(url, func) {
     app.post(url, (req, res) => {
-      res.json(req.body);
+      func(decode(req.body));
     });
   }
 
