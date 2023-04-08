@@ -31,7 +31,8 @@ export async function getUsers(data) {
 export async function addUser(data) {
   let msg,
     jsonToAdd = {};
-  if (data == undefined) return;
+  if (data == undefined || Object.keys(data).length == 0)
+    throw new RangeError("The data is empty or undefined.");
   else {
     if (data.id == undefined)
       jsonToAdd["id"] = decode(await getLastUserID()) + 1;
