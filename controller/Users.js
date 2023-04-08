@@ -59,8 +59,16 @@ export async function addUser(data) {
  * @returns
  */
 export async function updateUser(inId, data) {
-  if ((data == undefined && inId == undefined) || inId < 0) return;
-  await table.updateOne({ id: inId }, data);
+  let msg;
+  if (data == undefined || Object.keys(data).length == 0)
+    throw new RangeError("The data is empty or undefined.");
+  await table
+    .updateOne({ id: inId }, { $set: data })
+    .then(() => {
+      msg = "Success";
+    })
+    .catch((err) => (msg = err));
+  return msg;
 }
 
 /**
