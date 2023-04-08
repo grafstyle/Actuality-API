@@ -77,6 +77,12 @@ export async function updateUser(inId, data) {
  * @returns
  */
 export async function deleteUser(idToDelete) {
-  if (idToDelete == undefined || idToDelete < 0) return;
-  await table.deleteOne({ id: idToDelete });
+  let msg;
+  await table
+    .deleteOne({ id: idToDelete })
+    .then(() => {
+      msg = "Success";
+    })
+    .catch((err) => (msg = err));
+  return msg;
 }
