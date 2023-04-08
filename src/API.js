@@ -61,10 +61,9 @@ export class Router {
     });
   }
 
-  delete(url) {
+  delete(url, id, func) {
     app.delete(url, (req, res) => {
-      const { id } = req.params;
-      res.json({ deleted: id });
+      func(id);
     });
   }
 }
