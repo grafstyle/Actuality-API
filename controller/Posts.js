@@ -39,6 +39,7 @@ export async function addPost(data) {
       jsonToAdd["id"] = decode(await getLastPostID()) + 1;
     Object.keys(PostSchema).forEach((keyOfSchema) => {
       Object.keys(data).forEach(async (key) => {
+        if (keyOfSchema == "id") return;
         if (key == keyOfSchema) jsonToAdd[key] = data[key];
         else jsonToAdd[keyOfSchema] = null;
       });
