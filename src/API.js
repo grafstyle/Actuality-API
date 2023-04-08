@@ -55,10 +55,9 @@ export class Router {
     });
   }
 
-  update(url) {
+  update(url, id, func) {
     app.put(url, (req, res) => {
-      const { id } = req.params;
-      res.json(req.body);
+      func(id, req.body);
     });
   }
 
