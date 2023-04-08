@@ -8,6 +8,7 @@ let dataRet;
 
 export async function getLastUserID() {
   dataRet = await decode(await getUsers());
+  if (dataRet.length == 0) return 0;
   return encode(dataRet[dataRet.length - 1]["id"]);
 }
 
