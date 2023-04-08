@@ -46,24 +46,28 @@ export class Router {
   get(url, template) {
     app.get(url, (req, res) => {
       res.json(template);
+      res.end();
     });
   }
 
   post(url, func) {
     app.post(url, (req, res) => {
       func(decode(req.body));
+      res.end();
     });
   }
 
   update(url, id, func) {
     app.put(url, (req, res) => {
       func(id, req.body);
+      res.end();
     });
   }
 
   delete(url, id, func) {
     app.delete(url, (req, res) => {
       func(id);
+      res.end();
     });
   }
 }
