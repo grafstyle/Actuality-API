@@ -18,6 +18,12 @@ import {
   getComments,
   updateComment,
 } from "./controller/Comments.js";
+import {
+  addLike,
+  deleteLike,
+  getLikes,
+  updateLike,
+} from "./controller/Likes.js";
 
 const app = new App();
 const router = new Router();
@@ -25,6 +31,7 @@ const router = new Router();
 let allDataUsers = decode(await getUsers());
 let allDataPosts = decode(await getPosts());
 let allDataComments = decode(await getComments());
+let allDataLikes = decode(await getLikes());
 
 allDataUsers.forEach((elem) => {
   Object.keys(elem).forEach((key) => {
@@ -59,6 +66,17 @@ allDataComments.forEach((elem) => {
   });
 });
 
+allDataLikes.forEach((elem) => {
+  Object.keys(elem).forEach((key) => {
+    if (key == "id") {
+      let withIdUrl = "/Likes/" + elem["id"];
+      router.get(withIdUrl, elem);
+      router.update(withIdUrl, elem["id"], updateLike);
+      router.delete(withIdUrl, elem["id"], deleteLike);
+    }
+  });
+});
+
 router.get("/Users", allDataUsers);
 router.post("/Users", addUser);
 
@@ -67,3 +85,6 @@ router.post("/Posts", addPost);
 
 router.get("/Comments", allDataComments);
 router.post("/Comments", addComment);
+
+router.get("/Likes", allDataLikes);
+router.post("/Likes", addLike);
