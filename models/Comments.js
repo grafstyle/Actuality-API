@@ -1,6 +1,7 @@
 "use strict";
 
 const CommentSchema = {
+  id: Number,
   id_user: Number,
   id_post: Number,
   comment: String,
