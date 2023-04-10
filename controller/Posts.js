@@ -1,12 +1,24 @@
-"use strict";
+"use strict"; // Using strict.
 
+// All imports.
 import { decode, encode } from "../middleware/auth.js";
 import { connect } from "../src/DB.js";
 import PostSchema from "../models/Posts.js";
+
+/**
+ * Current collection getted.
+ */
 export const table = connect().collection("Posts");
 
+/**
+ * Data getted to return.
+ */
 let dataRet;
 
+/**
+ * Getting last post id.
+ * @returns last id or 0 if don't get data.
+ */
 export async function getLastPostID() {
   dataRet = await decode(await getPosts());
   if (dataRet.length == 0) return encode(0);
@@ -14,9 +26,9 @@ export async function getLastPostID() {
 }
 
 /**
- * To get data of multiple posts
+ * To get data of multiple posts.
  * @param { PostSchema | undefined } data
- * @returns encoded posts
+ * @returns encoded posts.
  */
 export async function getPosts(data) {
   if (data == undefined) data = {};
@@ -25,9 +37,9 @@ export async function getPosts(data) {
 }
 
 /**
- * To add data in posts
+ * To add data in posts.
  * @param { PostSchema } data
- * @returns
+ * @returns message.
  */
 export async function addPost(data) {
   let msg,
@@ -55,10 +67,10 @@ export async function addPost(data) {
 }
 
 /**
- * To update data in posts
+ * To update data in posts.
  * @param { number } inId
  * @param { PostSchema } data
- * @returns
+ * @returns message.
  */
 export async function updatePost(inId, data) {
   let msg;
@@ -74,9 +86,9 @@ export async function updatePost(inId, data) {
 }
 
 /**
- * To delete data in posts
+ * To delete data in posts.
  * @param { number } idToDelete
- * @returns
+ * @returns message.
  */
 export async function deletePost(idToDelete) {
   let msg;

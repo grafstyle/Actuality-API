@@ -1,5 +1,8 @@
-"use strict";
+"use strict"; // Using strict.
 
+/**
+ * Schema of posts.
+ */
 const PostSchema = {
   id: Number,
   id_user: Number,
@@ -9,4 +12,4 @@ const PostSchema = {
   cant_likes: Number,
 };
 
-export default PostSchema;
+export default PostSchema; // Exporting schema.
