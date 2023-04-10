@@ -1,11 +1,24 @@
-"use strict";
+"use strict"; // Using strict.
+
+// All Imports.
 import { decode, encode } from "../middleware/auth.js";
 import { connect } from "../src/DB.js";
 import UserSchema from "../models/Users.js";
+
+/**
+ * Current collection getted.
+ */
 export const table = connect().collection("Users");
 
+/**
+ * Data getted to return.
+ */
 let dataRet;
 
+/**
+ * Getting last users id.
+ * @returns last id or 0 if don't get data.
+ */
 export async function getLastUserID() {
   dataRet = await decode(await getUsers());
   if (dataRet.length == 0) return encode(0);
@@ -13,9 +26,9 @@ export async function getLastUserID() {
 }
 
 /**
- * To get data of multiple users
+ * To get data of multiple users.
  * @param { UserSchema | undefined } data
- * @returns encoded users
+ * @returns encoded users.
  */
 export async function getUsers(data) {
   if (data == undefined) data = {};
@@ -24,9 +37,9 @@ export async function getUsers(data) {
 }
 
 /**
- * To add data in users
+ * To add data in users.
  * @param { UserSchema } data
- * @returns
+ * @returns message.
  */
 export async function addUser(data) {
   let msg,
@@ -54,10 +67,10 @@ export async function addUser(data) {
 }
 
 /**
- * To update data in users
+ * To update data in users.
  * @param { number } inId
  * @param { UserSchema } data
- * @returns
+ * @returns message.
  */
 export async function updateUser(inId, data) {
   let msg;
@@ -73,9 +86,9 @@ export async function updateUser(inId, data) {
 }
 
 /**
- * To delete data in users
+ * To delete data in users.
  * @param { number } idToDelete
- * @returns
+ * @returns message.
  */
 export async function deleteUser(idToDelete) {
   let msg;

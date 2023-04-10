@@ -1,5 +1,8 @@
-"use strict";
+"use strict"; // Using strict.
 
+/**
+ * Schema of users.
+ */
 const UsersSchema = {
   email: String,
   name: String,
@@ -12,4 +15,4 @@ const UsersSchema = {
   Joined: String,
 };
 
-export default UsersSchema;
+export default UsersSchema; // Exporting schema.
