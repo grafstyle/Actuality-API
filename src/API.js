@@ -1,12 +1,27 @@
+// All imports.
 import bodyParser from "body-parser";
 import { decode } from "../middleware/auth.js";
 import cors from "cors";
 import express from "express";
 
+/**
+ * This API refered of express.
+ */
 const app = express();
+
+/**
+ * Port of API server.
+ */
 const port = 3500;
 
+/**
+ * Contains all methods for creating and showing this API.
+ */
 export class App {
+  /**
+   * Creates an server with multiple or one "templates".
+   * @param  {...String} args
+   */
   constructor(...args) {
     if (args.length == 0) this.change();
     else {
@@ -16,6 +31,10 @@ export class App {
     }
   }
 
+  /**
+   * Change all "templates" for new "templates".
+   * @param  {...String} args
+   */
   change(...args) {
     let corsOpt = {
       origin: "*",
@@ -42,7 +61,15 @@ export class App {
     app.use(cors(corsOpt), jsonParser);
   }
 }
+/**
+ * Contains the methods for url operations.
+ */
 export class Router {
+  /**
+   * GET operation, it is for get data by request.
+   * @param {String} url
+   * @param {String} template
+   */
   get(url, template) {
     app.get(url, (req, res) => {
       res.json(template);
@@ -50,6 +77,13 @@ export class Router {
     });
   }
 
+  /**
+   * POST operation, it is to post data by request.
+   *
+   * @param {String} url
+   * @param {Function} func
+   * Function to execute to add data in database.
+   */
   post(url, func) {
     app.post(url, (req, res) => {
       func(decode(req.body));
@@ -57,6 +91,14 @@ export class Router {
     });
   }
 
+  /**
+   * PUT operation, it is to update data by request.
+   * @param {String} url
+   * @param {Number} id
+   * Id to update.
+   * @param {Function} func
+   * Function to execute to add data in database.
+   */
   update(url, id, func) {
     app.put(url, (req, res) => {
       func(id, req.body);
@@ -64,6 +106,15 @@ export class Router {
     });
   }
 
+  /**
+   * DELETE operation, it is to delete data by request.
+   *
+   * @param {String} url
+   * @param {Number} id
+   * * Id to update.
+   * @param {Function} func
+   * Function to execute to add data in database.
+   */
   delete(url, id, func) {
     app.delete(url, (req, res) => {
       func(id);
