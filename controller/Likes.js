@@ -1,11 +1,24 @@
-"use strict";
+"use strict"; // Using strict.
+
+// All imports.
 import { decode, encode } from "../middleware/auth.js";
 import { connect } from "../src/DB.js";
 import LikeSchema from "../models/Likes.js";
+
+/**
+ * Current collection getted.
+ */
 export const table = connect().collection("Likes");
 
+/**
+ * Data getted to return.
+ */
 let dataRet;
 
+/**
+ * Getting last like id.
+ * @returns last id or 0 if don't get data.
+ */
 export async function getLastLikeID() {
   dataRet = await decode(await getLikes());
   if (dataRet.length == 0) return encode(0);
@@ -13,9 +26,9 @@ export async function getLastLikeID() {
 }
 
 /**
- * To get data of multiple likes
+ * To get data of multiple likes.
  * @param { LikeSchema | undefined } data
- * @returns encoded likes
+ * @returns encoded likes.
  */
 export async function getLikes(data) {
   if (data == undefined) data = {};
@@ -24,9 +37,9 @@ export async function getLikes(data) {
 }
 
 /**
- * To add data in likes
+ * To add data in likes.
  * @param { LikeSchema } data
- * @returns
+ * @returns message.
  */
 export async function addLike(data) {
   let msg,
@@ -54,10 +67,10 @@ export async function addLike(data) {
 }
 
 /**
- * To update data in likes
+ * To update data in likes.
  * @param { number } inId
  * @param { LikeSchema } data
- * @returns
+ * @returns message.
  */
 export async function updateLike(inId, data) {
   let msg;
@@ -73,9 +86,9 @@ export async function updateLike(inId, data) {
 }
 
 /**
- * To delete data in likes
+ * To delete data in likes.
  * @param { number } idToDelete
- * @returns
+ * @returns message.
  */
 export async function deleteLike(idToDelete) {
   let msg;
