@@ -1,5 +1,8 @@
-"use strict";
+"use strict"; // Using strict.
 
+/**
+ * Schema of comments.
+ */
 const CommentSchema = {
   id: Number,
   id_user: Number,
@@ -10,4 +13,4 @@ const CommentSchema = {
   date_modified: String,
 };
 
-export default CommentSchema;
+export default CommentSchema; // Exporting schema.

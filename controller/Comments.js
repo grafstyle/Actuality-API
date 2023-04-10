@@ -1,11 +1,24 @@
-"use strict";
+"use strict"; // Using strict.
+
+// All imports.
 import { decode, encode } from "../middleware/auth.js";
 import { connect } from "../src/DB.js";
 import CommentSchema from "../models/Comments.js";
+
+/**
+ * Current collection getted.
+ */
 export const table = connect().collection("Comments");
 
+/**
+ * Data getted to return.
+ */
 let dataRet;
 
+/**
+ * Getting last comments id.
+ * @returns last id or 0 if don't get data.
+ */
 export async function getLastCommentID() {
   dataRet = await decode(await getComments());
   if (dataRet.length == 0) return encode(0);
@@ -13,9 +26,9 @@ export async function getLastCommentID() {
 }
 
 /**
- * To get data of multiple comments
+ * To get data of multiple comments.
  * @param { CommentSchema | undefined } data
- * @returns encoded comments
+ * @returns encoded comments.
  */
 export async function getComments(data) {
   if (data == undefined) data = {};
@@ -24,9 +37,9 @@ export async function getComments(data) {
 }
 
 /**
- * To add data in comments
+ * To add data in comments.
  * @param { CommentSchema } data
- * @returns
+ * @returns message.
  */
 export async function addComment(data) {
   let msg,
@@ -54,10 +67,10 @@ export async function addComment(data) {
 }
 
 /**
- * To update data in comments
+ * To update data in comments.
  * @param { number } inId
  * @param { CommentSchema } data
- * @returns
+ * @returns message.
  */
 export async function updateComment(inId, data) {
   let msg;
@@ -73,9 +86,9 @@ export async function updateComment(inId, data) {
 }
 
 /**
- * To delete data in comments
+ * To delete data in comments.
  * @param { number } idToDelete
- * @returns
+ * @returns message.
  */
 export async function deleteComment(idToDelete) {
   let msg;
