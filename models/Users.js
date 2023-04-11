@@ -4,15 +4,16 @@
  * Schema of users.
  */
 const UsersSchema = {
-  email: String,
-  name: String,
-  url_name: String,
-  img: String,
-  portrait: String,
-  bio: String,
-  followers: Array,
-  followed: Array,
-  Joined: String,
+  id: 0,
+  email: "",
+  name: "",
+  url_name: "",
+  img: "",
+  portrait: "",
+  bio: "",
+  followers: [""],
+  followed: [""],
+  Joined: "",
 };
 
 export default UsersSchema; // Exporting schema.
