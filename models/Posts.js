@@ -4,12 +4,12 @@
  * Schema of posts.
  */
 const PostSchema = {
-  id: Number,
-  id_user: Number,
-  body: String,
-  date_added: String,
-  date_modiffied: String,
-  cant_likes: Number,
+  id: 0,
+  id_user: "",
+  body: "",
+  date_added: "",
+  date_modiffied: "",
+  cant_likes: 0,
 };
 
 export default PostSchema; // Exporting schema.
