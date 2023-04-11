@@ -25,6 +25,10 @@ import {
   getLikes,
   updateLike,
 } from "./controller/Likes.js";
+import UsersSchema from "./models/Users.js";
+import PostSchema from "./models/Posts.js";
+import CommentSchema from "./models/Comments.js";
+import LikeSchema from "./models/Likes.js";
 
 const app = new App();
 const router = new Router();
@@ -112,3 +116,9 @@ router.post("/Comments", addComment);
 // Adding the url's of get and post of likes.
 router.get("/Likes", allDataLikes);
 router.post("/Likes", addLike);
+
+// Adding all URL's of schemas.
+router.get("/UsersSchema", UsersSchema);
+router.get("/PostsSchema", PostSchema);
+router.get("/CommentsSchema", CommentSchema);
+router.get("/LikesSchema", LikeSchema);
