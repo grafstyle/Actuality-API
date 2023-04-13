@@ -1,7 +1,6 @@
 "use strict"; // Using strict.
 
 // All imports.
-import { decode, encode } from "../middleware/auth.js";
 import { connect } from "../src/DB.js";
 import LikeSchema from "../models/Likes.js";
 
@@ -20,20 +19,20 @@ let dataRet;
  * @returns last id or 0 if don't get data.
  */
 export async function getLastLikeID() {
-  dataRet = await decode(await getLikes());
-  if (dataRet.length == 0) return encode(0);
-  return encode(dataRet[dataRet.length - 1]["id"]);
+  dataRet = await getLikes();
+  if (dataRet.length == 0) return 0;
+  return dataRet[dataRet.length - 1]["id"];
 }
 
 /**
  * To get data of multiple likes.
  * @param { LikeSchema | undefined } data
- * @returns encoded likes.
+ * @returns likes.
  */
 export async function getLikes(data) {
   if (data == undefined) data = {};
   dataRet = await table.find(data).toArray();
-  return encode(dataRet);
+  return dataRet;
 }
 
 /**
@@ -47,8 +46,7 @@ export async function addLike(data) {
   if (data == undefined || Object.keys(data).length == 0)
     throw new RangeError("The data is empty or undefined.");
   else {
-    if (data.id == undefined)
-      jsonToAdd["id"] = decode(await getLastLikeID()) + 1;
+    if (data.id == undefined) jsonToAdd["id"] = (await getLastLikeID()) + 1;
     Object.keys(LikeSchema).forEach((keyOfSchema) => {
       Object.keys(data).forEach(async (key) => {
         if (keyOfSchema == "id") return;
