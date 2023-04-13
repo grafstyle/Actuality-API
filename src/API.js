@@ -86,7 +86,7 @@ export class Router {
    */
   post(url, func) {
     app.post(url, (req, res) => {
-      func(decode(req.body));
+      func(req.body);
       res.end();
     });
   }
