@@ -1,6 +1,6 @@
 // All imports.
 import { App, Router } from "./src/API.js";
-import { decode } from "./middleware/auth.js";
+import { decode, encode } from "./middleware/auth.js";
 import {
   addUser,
   deleteUser,
@@ -41,24 +41,24 @@ let allDataUsers = decode(await getUsers());
 /**
  * All data of posts.
  */
-let allDataPosts = decode(await getPosts());
+let allDataPosts = await getPosts();
 
 /**
  * All data of comments.
  */
-let allDataComments = decode(await getComments());
+let allDataComments = await getComments();
 
 /**
  * All data of likes.
  */
-let allDataLikes = decode(await getLikes());
+let allDataLikes = await getLikes();
 
 // Adding the url's of update, get and delete one in one of users.
 allDataUsers.forEach((elem) => {
   Object.keys(elem).forEach((key) => {
     if (key == "id") {
       let withIdUrl = "/Users/" + elem["id"];
-      router.get(withIdUrl, elem);
+      router.get(withIdUrl, encode(elem));
       router.update(withIdUrl, elem["id"], updateUser);
       router.delete(withIdUrl, elem["id"], deleteUser);
     }
