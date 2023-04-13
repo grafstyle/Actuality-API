@@ -1,7 +1,6 @@
 "use strict"; // Using strict.
 
 // All imports.
-import { decode, encode } from "../middleware/auth.js";
 import { connect } from "../src/DB.js";
 import CommentSchema from "../models/Comments.js";
 
@@ -20,20 +19,20 @@ let dataRet;
  * @returns last id or 0 if don't get data.
  */
 export async function getLastCommentID() {
-  dataRet = await decode(await getComments());
-  if (dataRet.length == 0) return encode(0);
-  return encode(dataRet[dataRet.length - 1]["id"]);
+  dataRet = await getComments();
+  if (dataRet.length == 0) return 0;
+  return dataRet[dataRet.length - 1]["id"];
 }
 
 /**
  * To get data of multiple comments.
  * @param { CommentSchema | undefined } data
- * @returns encoded comments.
+ * @returns comments.
  */
 export async function getComments(data) {
   if (data == undefined) data = {};
   dataRet = await table.find(data).toArray();
-  return encode(dataRet);
+  return dataRet;
 }
 
 /**
@@ -47,8 +46,7 @@ export async function addComment(data) {
   if (data == undefined || Object.keys(data).length == 0)
     throw new RangeError("The data is empty or undefined.");
   else {
-    if (data.id == undefined)
-      jsonToAdd["id"] = decode(await getLastCommentID()) + 1;
+    if (data.id == undefined) jsonToAdd["id"] = (await getLastCommentID()) + 1;
     Object.keys(CommentSchema).forEach((keyOfSchema) => {
       Object.keys(data).forEach(async (key) => {
         if (keyOfSchema == "id") return;
