@@ -25,10 +25,6 @@ import {
   getLikes,
   updateLike,
 } from "./controller/Likes.js";
-import UsersSchema from "./models/Users.js";
-import PostSchema from "./models/Posts.js";
-import CommentSchema from "./models/Comments.js";
-import LikeSchema from "./models/Likes.js";
 
 const app = new App();
 const router = new Router();
@@ -57,7 +53,7 @@ let allDataLikes = await getLikes();
 allDataUsers.forEach((elem) => {
   Object.keys(elem).forEach((key) => {
     if (key == "id") {
-      let withIdUrl = "/Users/" + elem["id"];
+      let withIdUrl = "/users/" + elem["id"];
       router.get(withIdUrl, encode(elem));
       router.update(withIdUrl, elem["id"], updateUser);
       router.delete(withIdUrl, elem["id"], deleteUser);
@@ -69,7 +65,7 @@ allDataUsers.forEach((elem) => {
 allDataPosts.forEach((elem) => {
   Object.keys(elem).forEach((key) => {
     if (key == "id") {
-      let withIdUrl = "/Posts/" + elem["id"];
+      let withIdUrl = "/posts/" + elem["id"];
       router.get(withIdUrl, elem);
       router.update(withIdUrl, elem["id"], updatePost);
       router.delete(withIdUrl, elem["id"], deletePost);
@@ -81,7 +77,7 @@ allDataPosts.forEach((elem) => {
 allDataComments.forEach((elem) => {
   Object.keys(elem).forEach((key) => {
     if (key == "id") {
-      let withIdUrl = "/Comments/" + elem["id"];
+      let withIdUrl = "/comments/" + elem["id"];
       router.get(withIdUrl, elem);
       router.update(withIdUrl, elem["id"], updateComment);
       router.delete(withIdUrl, elem["id"], deleteComment);
@@ -93,7 +89,7 @@ allDataComments.forEach((elem) => {
 allDataLikes.forEach((elem) => {
   Object.keys(elem).forEach((key) => {
     if (key == "id") {
-      let withIdUrl = "/Likes/" + elem["id"];
+      let withIdUrl = "/likes/" + elem["id"];
       router.get(withIdUrl, elem);
       router.update(withIdUrl, elem["id"], updateLike);
       router.delete(withIdUrl, elem["id"], deleteLike);
@@ -102,23 +98,17 @@ allDataLikes.forEach((elem) => {
 });
 
 // Adding the url's of get and post of users.
-router.get("/Users", allDataUsers);
-router.post("/Users", addUser);
+router.get("/users", allDataUsers);
+router.post("/users", addUser);
 
 // Adding the url's of get and post of posts.
-router.get("/Posts", allDataPosts);
-router.post("/Posts", addPost);
+router.get("/posts", allDataPosts);
+router.post("/posts", addPost);
 
 // Adding the url's of get and post of comments.
-router.get("/Comments", allDataComments);
-router.post("/Comments", addComment);
+router.get("/comments", allDataComments);
+router.post("/comments", addComment);
 
 // Adding the url's of get and post of likes.
-router.get("/Likes", allDataLikes);
-router.post("/Likes", addLike);
-
-// Adding all URL's of schemas.
-router.get("/UsersSchema", UsersSchema);
-router.get("/PostsSchema", PostSchema);
-router.get("/CommentsSchema", CommentSchema);
-router.get("/LikesSchema", LikeSchema);
+router.get("/likes", allDataLikes);
+router.post("/likes", addLike);
