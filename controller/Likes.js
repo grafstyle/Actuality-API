@@ -2,7 +2,6 @@
 
 // All imports.
 import { connect } from "../src/DB.js";
-import LikeSchema from "../models/Likes.js";
 
 /**
  * Current collection getted.
@@ -41,22 +40,11 @@ export async function getLikes(data) {
  * @returns message.
  */
 export async function addLike(data) {
-  let msg,
-    jsonToAdd = {};
+  let msg;
   if (data == undefined || Object.keys(data).length == 0)
     throw new RangeError("The data is empty or undefined.");
-  else {
-    if (data.id == undefined) jsonToAdd["id"] = (await getLastLikeID()) + 1;
-    Object.keys(LikeSchema).forEach((keyOfSchema) => {
-      Object.keys(data).forEach(async (key) => {
-        if (keyOfSchema == "id") return;
-        if (key == keyOfSchema) jsonToAdd[key] = data[key];
-        else jsonToAdd[keyOfSchema] = null;
-      });
-    });
-  }
   await table
-    .insertOne(jsonToAdd)
+    .insertOne(data)
     .then(() => {
       msg = "Success";
     })
