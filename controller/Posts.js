@@ -2,7 +2,6 @@
 
 // All imports.
 import { connect } from "../src/DB.js";
-import PostSchema from "../models/Posts.js";
 
 /**
  * Current collection getted.
@@ -41,22 +40,11 @@ export async function getPosts(data) {
  * @returns message.
  */
 export async function addPost(data) {
-  let msg,
-    jsonToAdd = {};
+  let msg;
   if (data == undefined || Object.keys(data).length == 0)
     throw new RangeError("The data is empty or undefined.");
-  else {
-    if (data.id == undefined) jsonToAdd["id"] = (await getLastPostID()) + 1;
-    Object.keys(PostSchema).forEach((keyOfSchema) => {
-      Object.keys(data).forEach(async (key) => {
-        if (keyOfSchema == "id") return;
-        if (key == keyOfSchema) jsonToAdd[key] = data[key];
-        else jsonToAdd[keyOfSchema] = null;
-      });
-    });
-  }
   await table
-    .insertOne(jsonToAdd)
+    .insertOne(data)
     .then(() => {
       msg = "Success";
     })
