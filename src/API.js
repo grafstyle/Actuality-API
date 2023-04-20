@@ -1,6 +1,5 @@
 // All imports.
 import bodyParser from "body-parser";
-import { decode } from "../middleware/auth.js";
 import cors from "cors";
 import express from "express";
 
