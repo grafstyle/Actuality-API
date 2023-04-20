@@ -3,7 +3,6 @@
 // All Imports.
 import { decode, encode } from "../middleware/auth.js";
 import { connect } from "../src/DB.js";
-import UserSchema from "../models/Users.js";
 
 /**
  * Current collection getted.
@@ -42,23 +41,11 @@ export async function getUsers(data) {
  * @returns message.
  */
 export async function addUser(data) {
-  let msg,
-    jsonToAdd = {};
+  let msg;
   if (data == undefined || Object.keys(data).length == 0)
     throw new RangeError("The data is empty or undefined.");
-  else {
-    if (data.id == undefined)
-      jsonToAdd["id"] = decode(await getLastUserID()) + 1;
-    Object.keys(UserSchema).forEach((keyOfSchema) => {
-      Object.keys(data).forEach(async (key) => {
-        if (keyOfSchema == "id") return;
-        if (key == keyOfSchema) jsonToAdd[key] = data[key];
-        else jsonToAdd[keyOfSchema] = null;
-      });
-    });
-  }
   await table
-    .insertOne(jsonToAdd)
+    .insertOne(data)
     .then(() => {
       msg = "Success";
     })
