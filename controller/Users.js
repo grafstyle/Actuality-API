@@ -1,7 +1,6 @@
 "use strict"; // Using strict.
 
 // All Imports.
-import { decode, encode } from "../middleware/auth.js";
 import { connect } from "../src/DB.js";
 
 /**
@@ -19,31 +18,33 @@ let dataRet;
  * @returns last id or 0 if don't get data.
  */
 export async function getLastUserID() {
-  dataRet = await decode(await getUsers());
-  if (dataRet.length == 0) return encode(0);
-  return encode(dataRet[dataRet.length - 1]["id"]);
+  dataRet = await getUsers();
+  if (dataRet.length == 0) return 0;
+  return dataRet[dataRet.length - 1]["id"];
 }
 
 /**
  * To get data of multiple users.
- * @param { UserSchema | undefined } data
+ * @param { JSON | undefined } data
  * @returns encoded users.
  */
 export async function getUsers(data) {
   if (data == undefined) data = {};
   dataRet = await table.find(data).toArray();
-  return encode(dataRet);
+  return dataRet;
 }
 
 /**
  * To add data in users.
- * @param { UserSchema } data
+ * @param { JSON } data
  * @returns message.
  */
 export async function addUser(data) {
-  let msg;
+  let msg,
+    lastID = await getLastUserID();
   if (data == undefined || Object.keys(data).length == 0)
     throw new RangeError("The data is empty or undefined.");
+  if (data["id"] == undefined || data["id"] < 0) data["id"] = lastID + 1;
   await table
     .insertOne(data)
     .then(() => {
@@ -56,7 +57,7 @@ export async function addUser(data) {
 /**
  * To update data in users.
  * @param { number } inId
- * @param { UserSchema } data
+ * @param { JSON } data
  * @returns message.
  */
 export async function updateUser(inId, data) {
