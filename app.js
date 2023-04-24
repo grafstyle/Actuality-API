@@ -1,6 +1,5 @@
 // All imports.
 import { App, Router } from "./src/API.js";
-import { decode, encode } from "./middleware/auth.js";
 import {
   addUser,
   deleteUser,
@@ -32,7 +31,7 @@ const router = new Router();
 /**
  * All data of users.
  */
-let allDataUsers = decode(await getUsers());
+let allDataUsers = await getUsers();
 
 /**
  * All data of posts.
@@ -54,7 +53,7 @@ allDataUsers.forEach((elem) => {
   Object.keys(elem).forEach((key) => {
     if (key == "id") {
       let withIdUrl = "/users/" + elem["id"];
-      router.get(withIdUrl, encode(elem));
+      router.get(withIdUrl, elem);
       router.update(withIdUrl, elem["id"], updateUser);
       router.delete(withIdUrl, elem["id"], deleteUser);
     }
