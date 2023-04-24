@@ -40,9 +40,11 @@ export async function getPosts(data) {
  * @returns message.
  */
 export async function addPost(data) {
-  let msg;
+  let msg,
+    lastID = await getLastPostID();
   if (data == undefined || Object.keys(data).length == 0)
     throw new RangeError("The data is empty or undefined.");
+  if (data["id"] == undefined || data["id"] < 0) data["id"] = lastID + 1;
   await table
     .insertOne(data)
     .then(() => {
