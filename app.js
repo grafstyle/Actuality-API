@@ -24,9 +24,11 @@ import {
   getLikes,
   updateLike,
 } from "./controller/Likes.js";
+import * as url from "url";
 
 const app = new App();
 const router = new Router();
+const appURL = "http://localhost:4200";
 
 /**
  * All data of users.
@@ -99,15 +101,19 @@ allDataLikes.forEach((elem) => {
 // Adding the url's of get and post of users.
 router.get("/users", allDataUsers);
 router.post("/users", addUser);
+router.getByParams("/users/get", getUsers);
 
 // Adding the url's of get and post of posts.
 router.get("/posts", allDataPosts);
 router.post("/posts", addPost);
+router.getByParams("/posts/get", getPosts);
 
 // Adding the url's of get and post of comments.
 router.get("/comments", allDataComments);
 router.post("/comments", addComment);
+router.getByParams("/comments/get", getComments);
 
 // Adding the url's of get and post of likes.
 router.get("/likes", allDataLikes);
 router.post("/likes", addLike);
+router.getByParams("/likes/get", getLikes);
