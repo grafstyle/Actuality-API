@@ -77,6 +77,24 @@ export class Router {
   }
 
   /**
+   * GET operation, it is to get all data by url variables.
+   * @param {String} url
+   * @param {Function} func
+   */
+  getByParams(url, func) {
+    let newUrlParams = {};
+    app.get(url, async (req, res) => {
+      Object.keys(req.query).forEach((key) => {
+        if (!isNaN(req.query[key]))
+          newUrlParams[key] = parseInt(req.query[key]);
+        else newUrlParams[key] = req.query[key];
+      });
+      res.json(await func(newUrlParams));
+      res.end();
+    });
+  }
+
+  /**
    * POST operation, it is to post data by request.
    *
    * @param {String} url
