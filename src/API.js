@@ -43,7 +43,7 @@ export class App {
       credentials: true,
     };
 
-    let jsonParser = bodyParser.json();
+    let jsonParser = bodyParser.json({ limit: "60mb" });
 
     app.get("/", (req, res) => {
       if (args.length > 0) {
@@ -104,6 +104,26 @@ export class Router {
   post(url, func) {
     app.post(url, (req, res) => {
       func(req.body);
+      res.end();
+    });
+  }
+
+  /**
+   * POST operation, it is to post data by request.
+   *
+   * @param {String} url
+   * @param {Function} func
+   * Function to execute to add data to cloudinary or database.
+   */
+  postImage(url, func) {
+    app.post(url, (req, res) => {
+      if (
+        req.body.image != undefined &&
+        req.body.image != undefined &&
+        req.body.url != undefined
+      )
+        res.send(func(req.body));
+      else res.send("Image or url is missing.");
       res.end();
     });
   }
