@@ -4,6 +4,13 @@
 import { v2 as cloudinary } from "cloudinary";
 import * as dontenv from "dotenv";
 
+// JSON type of schema.
+let ImageInfo = {
+  image: "",
+  name: "",
+  url: "",
+};
+
 /**
  * To set all configs of cloudinary.
  */
@@ -19,26 +26,18 @@ export function config() {
 }
 
 /**
- * To get all options to upload an image.
- * @param { string } url
- */
-async function getOptions(url) {
-  return {
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-    folder: url,
-  };
-}
-
-/**
  * To upload an image.
- * @param { string } toUrl
- * @param { string } image
+ * @param { ImageInfo } imageData
  */
-export async function addImage(image, toUrl) {
+export async function addImage(imageData) {
   try {
-    return await cloudinary.uploader.upload(image, getOptions(toUrl));
+    return await cloudinary.uploader.upload(imageData.image, {
+      use_filename: true,
+      unique_filename: false,
+      overwrite: true,
+      filename_override: imageData.name,
+      folder: imageData.url,
+    });
   } catch (err) {
     return err;
   }
