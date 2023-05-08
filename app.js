@@ -24,7 +24,7 @@ import {
   getLikes,
   updateLike,
 } from "./controller/Likes.js";
-import * as url from "url";
+import * as cloudinary from "./controller/Cloudinary.js";
 
 const app = new App();
 const router = new Router();
@@ -117,3 +117,7 @@ router.getByParams("/comments/get", getComments);
 router.get("/likes", allDataLikes);
 router.post("/likes", addLike);
 router.getByParams("/likes/get", getLikes);
+
+// Adding the url's to post of cloudinary and config it.
+cloudinary.config();
+router.postImage("/new/image", cloudinary.addImage);
