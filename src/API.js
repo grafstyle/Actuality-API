@@ -116,13 +116,13 @@ export class Router {
    * Function to execute to add data to cloudinary or database.
    */
   postImage(url, func) {
-    app.post(url, (req, res) => {
+    app.post(url, async (req, res) => {
       if (
         req.body.image != undefined &&
         req.body.image != undefined &&
         req.body.url != undefined
       )
-        res.send(func(req.body));
+        res.send(await func(req.body));
       else res.send("Image or url is missing.");
       res.end();
     });
