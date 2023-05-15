@@ -17,6 +17,8 @@ const port = 3500;
  * Contains all methods for creating and showing this API.
  */
 export class App {
+  router = app;
+
   /**
    * Creates an server with multiple or one "templates".
    * @param  {...String} args
@@ -37,7 +39,7 @@ export class App {
   change(...args) {
     let corsOpt = {
       origin: "*",
-      methods: "GET, HEAD, OPTIONS , POST, PUT",
+      methods: "GET, HEAD, OPTIONS, POST, PUT, DELETE",
       allowedHeaders:
         "Origin, X-Requested-With, Content-Type, Accept, Authorization",
       credentials: true,
@@ -59,53 +61,21 @@ export class App {
     });
     app.use(cors(corsOpt), jsonParser);
   }
-}
-/**
- * Contains the methods for url operations.
- */
-export class Router {
-  /**
-   * GET operation, it is for get data by request.
-   * @param {String} url
-   * @param {String} template
-   */
-  get(url, template) {
-    app.get(url, (req, res) => {
-      res.json(template);
-      res.end();
-    });
-  }
 
   /**
-   * GET operation, it is to get all data by url variables.
-   * @param {String} url
-   * @param {Function} func
+   * Method to convert the query of the request to new parameters
+   * with the respective data type.
+   * @param { Request } request
+   * @returns parameters of url's
    */
-  getByParams(url, func) {
-    let newUrlParams = {};
-    app.get(url, async (req, res) => {
-      Object.keys(req.query).forEach((key) => {
-        if (!isNaN(req.query[key]))
-          newUrlParams[key] = parseInt(req.query[key]);
-        else newUrlParams[key] = req.query[key];
-      });
-      res.json(await func(newUrlParams));
-      res.end();
+  static getParamsOfURL(request) {
+    const newParams = {};
+    Object.keys(request.query).forEach((key) => {
+      if (!isNaN(request.query[key]))
+        newParams[key] = parseInt(request.query[key]);
+      else newParams[key] = request.query[key];
     });
-  }
-
-  /**
-   * POST operation, it is to post data by request.
-   *
-   * @param {String} url
-   * @param {Function} func
-   * Function to execute to add data in database.
-   */
-  post(url, func) {
-    app.post(url, (req, res) => {
-      func(req.body);
-      res.end();
-    });
+    return newParams;
   }
 
   /**
@@ -116,7 +86,7 @@ export class Router {
    * Function to execute to add data to cloudinary or database.
    */
   postImage(url, func) {
-    app.post(url, async (req, res) => {
+    this.router.post(url, async (req, res) => {
       if (
         req.body.image != undefined &&
         req.body.image != undefined &&
@@ -124,37 +94,6 @@ export class Router {
       )
         res.send(await func(req.body));
       else res.send("Image or url is missing.");
-      res.end();
-    });
-  }
-
-  /**
-   * PUT operation, it is to update data by request.
-   * @param {String} url
-   * @param {Number} id
-   * Id to update.
-   * @param {Function} func
-   * Function to execute to add data in database.
-   */
-  update(url, id, func) {
-    app.put(url, (req, res) => {
-      func(id, req.body);
-      res.end();
-    });
-  }
-
-  /**
-   * DELETE operation, it is to delete data by request.
-   *
-   * @param {String} url
-   * @param {Number} id
-   * * Id to update.
-   * @param {Function} func
-   * Function to execute to add data in database.
-   */
-  delete(url, id, func) {
-    app.delete(url, (req, res) => {
-      func(id);
       res.end();
     });
   }
