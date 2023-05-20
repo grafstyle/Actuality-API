@@ -89,11 +89,26 @@ export class App {
     this.router.post(url, async (req, res) => {
       if (
         req.body.image != undefined &&
-        req.body.image != undefined &&
+        req.body.name != undefined &&
         req.body.url != undefined
       )
         res.send(await func(req.body));
-      else res.send("Image or url is missing.");
+      else res.send({ error: "Image or url is missing." });
+      res.end();
+    });
+  }
+
+  /**
+   * DELETE operation, it is to delete data by request.
+   *
+   * @param {String} url
+   * @param {Function} func
+   * Function to execute to add data to cloudinary or database.
+   */
+  deleteImage(url, func) {
+    this.router.delete(url, async (req, res) => {
+      if (req.body.url != undefined) res.send(await func(req.body));
+      else res.send({ error: "Url is missing" });
       res.end();
     });
   }
