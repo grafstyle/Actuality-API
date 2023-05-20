@@ -40,18 +40,16 @@ export async function getPosts(data) {
  * @returns message.
  */
 export async function addPost(data) {
-  let msg,
-    lastID = await getLastPostID();
-  if (data == undefined || Object.keys(data).length == 0)
-    throw new RangeError("The data is empty or undefined.");
-  if (data["id"] == undefined || data["id"] < 0) data["id"] = lastID + 1;
-  await table
-    .insertOne(data)
-    .then(() => {
-      msg = "Success";
-    })
-    .catch((err) => (msg = err));
-  return msg;
+  return new Promise((res, rej) => {
+    let lastID = async () => await getLastPostID();
+    if (data == undefined || Object.keys(data).length == 0)
+      rej("The data is empty or undefined.");
+    if (data["id"] == undefined || data["id"] < 0) data["id"] = lastID + 1;
+    table
+      .insertOne(data)
+      .then(() => res({ done: true }))
+      .catch((err) => rej(err));
+  });
 }
 
 /**
@@ -61,16 +59,14 @@ export async function addPost(data) {
  * @returns message.
  */
 export async function updatePost(inId, data) {
-  let msg;
-  if (data == undefined || Object.keys(data).length == 0)
-    throw new RangeError("The data is empty or undefined.");
-  await table
-    .updateOne({ id: inId }, { $set: data })
-    .then(() => {
-      msg = "Success";
-    })
-    .catch((err) => (msg = err));
-  return msg;
+  return new Promise((res, rej) => {
+    if (data == undefined || Object.keys(data).length == 0)
+      rej("The data is empty or undefined.");
+    table
+      .updateOne({ id: inId }, { $set: data })
+      .then(() => res({ done: true }))
+      .catch((err) => rej(err));
+  });
 }
 
 /**
@@ -79,12 +75,10 @@ export async function updatePost(inId, data) {
  * @returns message.
  */
 export async function deletePost(idToDelete) {
-  let msg;
-  await table
-    .deleteOne({ id: idToDelete })
-    .then(() => {
-      msg = "Success";
-    })
-    .catch((err) => (msg = err));
-  return msg;
+  return new Promise((res, rej) => {
+    table
+      .deleteOne({ id: idToDelete })
+      .then(() => res({ done: true }))
+      .catch((err) => rej(err));
+  });
 }
