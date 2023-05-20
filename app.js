@@ -1,5 +1,5 @@
 // All imports.
-import { App, Router } from "./src/API.js";
+import { App } from "./src/API.js";
 import {
   addUser,
   deleteUser,
@@ -27,97 +27,120 @@ import {
 import * as cloudinary from "./controller/Cloudinary.js";
 
 const app = new App();
-const router = new Router();
-const appURL = "http://localhost:4200";
 
-/**
- * All data of users.
- */
-let allDataUsers = await getUsers();
-
-/**
- * All data of posts.
- */
-let allDataPosts = await getPosts();
-
-/**
- * All data of comments.
- */
-let allDataComments = await getComments();
-
-/**
- * All data of likes.
- */
-let allDataLikes = await getLikes();
-
-// Adding the url's of update, get and delete one in one of users.
-allDataUsers.forEach((elem) => {
-  Object.keys(elem).forEach((key) => {
-    if (key == "id") {
-      let withIdUrl = "/users/" + elem["id"];
-      router.get(withIdUrl, elem);
-      router.update(withIdUrl, elem["id"], updateUser);
-      router.delete(withIdUrl, elem["id"], deleteUser);
-    }
-  });
+// Adding the url's of get's and post of users.
+app.router.get("/users", async (req, res) => {
+  res.send(await getUsers());
+  res.end();
 });
 
-// Adding the url's of update, get and delete one in one of posts.
-allDataPosts.forEach((elem) => {
-  Object.keys(elem).forEach((key) => {
-    if (key == "id") {
-      let withIdUrl = "/posts/" + elem["id"];
-      router.get(withIdUrl, elem);
-      router.update(withIdUrl, elem["id"], updatePost);
-      router.delete(withIdUrl, elem["id"], deletePost);
-    }
-  });
+app.router.get("/users/get", async (req, res) => {
+  res.send(await getUsers(App.getParamsOfURL(req)));
+  res.end();
 });
 
-// Adding the url's of update, get and delete one in one of comments.
-allDataComments.forEach((elem) => {
-  Object.keys(elem).forEach((key) => {
-    if (key == "id") {
-      let withIdUrl = "/comments/" + elem["id"];
-      router.get(withIdUrl, elem);
-      router.update(withIdUrl, elem["id"], updateComment);
-      router.delete(withIdUrl, elem["id"], deleteComment);
-    }
-  });
+app.router.post("/users", (req, res) => {
+  addUser(req.body);
+  res.end();
 });
 
-// Adding the url's of update, get and delete one in one of likes.
-allDataLikes.forEach((elem) => {
-  Object.keys(elem).forEach((key) => {
-    if (key == "id") {
-      let withIdUrl = "/likes/" + elem["id"];
-      router.get(withIdUrl, elem);
-      router.update(withIdUrl, elem["id"], updateLike);
-      router.delete(withIdUrl, elem["id"], deleteLike);
-    }
-  });
+app.router.put("/users/put", async (req, res) => {
+  res.send(await updateUser(App.getParamsOfURL(req)));
+  res.end();
 });
 
-// Adding the url's of get and post of users.
-router.get("/users", allDataUsers);
-router.post("/users", addUser);
-router.getByParams("/users/get", getUsers);
+app.router.delete("/users/delete", async (req, res) => {
+  const id = App.getParamsOfURL(req).id;
+  console.log(id);
+  if (id != undefined) res.send(await deleteUser(id));
+  else res.send('Please type variable "id" in the url, with valid "id"');
+  res.end();
+});
 
-// Adding the url's of get and post of posts.
-router.get("/posts", allDataPosts);
-router.post("/posts", addPost);
-router.getByParams("/posts/get", getPosts);
+// Adding the url's of get's and post of posts.
+app.router.get("/posts", async (req, res) => {
+  res.send(await getPosts());
+  res.end();
+});
 
-// Adding the url's of get and post of comments.
-router.get("/comments", allDataComments);
-router.post("/comments", addComment);
-router.getByParams("/comments/get", getComments);
+app.router.get("/posts/get", async (req, res) => {
+  res.send(await getPosts(App.getParamsOfURL(req)));
+  res.end();
+});
 
-// Adding the url's of get and post of likes.
-router.get("/likes", allDataLikes);
-router.post("/likes", addLike);
-router.getByParams("/likes/get", getLikes);
+app.router.post("/posts", (req, res) => {
+  addPost(req.body);
+  res.end();
+});
+
+app.router.put("/posts/put", async (req, res) => {
+  res.send(await updatePost(App.getParamsOfURL(req)));
+  res.end();
+});
+
+app.router.delete("/posts/delete", async (req, res) => {
+  const id = App.getParamsOfURL(req).id;
+  if (id != undefined) res.send(await deletePost(id));
+  else res.send('Please type variable "id" in the url, with valid "id"');
+  res.end();
+});
+
+// Adding the url's of get's and post of comments.
+app.router.get("/comments", async (req, res) => {
+  res.send(await getComments());
+  res.end();
+});
+
+app.router.get("/comments/get", async (req, res) => {
+  res.send(await getComments(App.getParamsOfURL(req)));
+  res.end();
+});
+
+app.router.post("/comments", (req, res) => {
+  addComment(req.body);
+  res.end();
+});
+
+app.router.put("/comments/put", async (req, res) => {
+  res.send(await updateComment(App.getParamsOfURL(req)));
+  res.end();
+});
+
+app.router.delete("/comments/delete", async (req, res) => {
+  const id = App.getParamsOfURL(req).id;
+  if (id != undefined) res.send(await deleteComment(id));
+  else res.send('Please type variable "id" in the url, with valid "id"');
+  res.end();
+});
+
+// Adding the url's of get's and post of likes.
+app.router.get("/likes", async (req, res) => {
+  res.send(await getLikes());
+  res.end();
+});
+
+app.router.get("/likes/get", async (req, res) => {
+  res.send(await getLikes(App.getParamsOfURL(req)));
+  res.end();
+});
+
+app.router.post("/likes", (req, res) => {
+  addLike(req.body);
+  res.end();
+});
+
+app.router.put("/likes/put", async (req, res) => {
+  res.send(await updateLike(App.getParamsOfURL(req)));
+  res.end();
+});
+
+app.router.delete("/likes/delete", async (req, res) => {
+  const id = App.getParamsOfURL(req).id;
+  if (id != undefined) res.send(await deleteLike(id));
+  else res.send('Please type variable "id" in the url, with valid "id"');
+  res.end();
+});
 
 // Adding the url's to post of cloudinary and config it.
 cloudinary.config();
-router.postImage("/new/image", cloudinary.addImage);
+app.postImage("/new/image", cloudinary.addImage);
