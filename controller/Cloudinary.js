@@ -26,19 +26,50 @@ export function config() {
 }
 
 /**
+ * To format urls to eliminate it in cloudinary.
+ * @param { string } url
+ */
+function getDirAndName(url) {
+  const completeURL = `https://res.cloudinary.com/${process.env.CLOUD_NAME}/image/upload/`;
+  let fileAndDir;
+  if (url.includes(completeURL)) {
+    url = url.replace(completeURL, "");
+    const dirs = url.split("/")[1];
+    fileAndDir = dirs.split(".")[0];
+  } else fileAndDir = url.split(".")[0];
+  return fileAndDir;
+}
+
+/**
  * To upload an image.
  * @param { ImageInfo } imageData
  */
-export async function addImage(imageData) {
-  try {
-    return await cloudinary.uploader.upload(imageData.image, {
-      use_filename: true,
-      unique_filename: false,
-      overwrite: true,
-      filename_override: imageData.name,
-      folder: imageData.url,
-    });
-  } catch (err) {
-    return err;
-  }
+export function addImage(imageData) {
+  return new Promise((res, rej) => {
+    cloudinary.uploader
+      .upload(imageData.image, {
+        use_filename: true,
+        unique_filename: false,
+        overwrite: true,
+        filename_override: imageData.name,
+        folder: imageData.url,
+      })
+      .then((done) => res(done))
+      .catch((err) => rej(err));
+  });
+}
+
+/**
+ * To delete an image.
+ * @param { string } url
+ */
+export function deleteImage(url) {
+  return new Promise((res, rej) => {
+    cloudinary.uploader
+      .destroy(getDirAndName(url))
+      .then((done) => res(done))
+      .then((err) => {
+        rej(err);
+      });
+  });
 }
