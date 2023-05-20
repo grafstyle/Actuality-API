@@ -39,20 +39,18 @@ export async function getLikes(data) {
  * @param { LikeSchema } data
  * @returns message.
  */
-export async function addLike(data) {
-  let msg,
-    lastID = getLastLikeID();
-  if (data == undefined || Object.keys(data).length == 0)
-    throw new RangeError("The data is empty or undefined.");
-  if (data["id"] == undefined || data["id"] < 0)
-    data["id"] = (await lastID) + 1;
-  await table
-    .insertOne(data)
-    .then(() => {
-      msg = "Success";
-    })
-    .catch((err) => (msg = err));
-  return msg;
+export function addLike(data) {
+  return new Promise((res, rej) => {
+    let lastID = getLastLikeID();
+    if (data == undefined || Object.keys(data).length == 0)
+      rej("The data is empty or undefined.");
+    if (data["id"] == undefined || data["id"] < 0)
+      data["id"] = async () => (await lastID) + 1;
+    table
+      .insertOne(data)
+      .then(() => res({ done: true }))
+      .catch((err) => rej(err));
+  });
 }
 
 /**
@@ -62,16 +60,14 @@ export async function addLike(data) {
  * @returns message.
  */
 export async function updateLike(inId, data) {
-  let msg;
-  if (data == undefined || Object.keys(data).length == 0)
-    throw new RangeError("The data is empty or undefined.");
-  await table
-    .updateOne({ id: inId }, { $set: data })
-    .then(() => {
-      msg = "Success";
-    })
-    .catch((err) => (msg = err));
-  return msg;
+  return new Promise((res, rej) => {
+    if (data == undefined || Object.keys(data).length == 0)
+      rej("The data is empty or undefined.");
+    table
+      .updateOne({ id: inId }, { $set: data })
+      .then(() => res({ done: true }))
+      .catch((err) => rej(err));
+  });
 }
 
 /**
@@ -80,12 +76,10 @@ export async function updateLike(inId, data) {
  * @returns message.
  */
 export async function deleteLike(idToDelete) {
-  let msg;
-  await table
-    .deleteOne({ id: idToDelete })
-    .then(() => {
-      msg = "Success";
-    })
-    .catch((err) => (msg = err));
-  return msg;
+  return new Promise((res, rej) => {
+    table
+      .deleteOne({ id: idToDelete })
+      .then(() => res({ done: true }))
+      .catch((err) => rej(err));
+  });
 }
