@@ -41,11 +41,14 @@ export async function getLikes(data) {
  */
 export function addLike(data) {
   return new Promise((res, rej) => {
-    let lastID = getLastLikeID();
     if (data == undefined || Object.keys(data).length == 0)
       rej("The data is empty or undefined.");
     if (data["id"] == undefined || data["id"] < 0)
-      data["id"] = async () => (await lastID) + 1;
+      getLastLikeID()
+        .then((id) => {
+          data["id"] = id + 1;
+        })
+        .catch((err) => rej(err));
     table
       .insertOne(data)
       .then(() => res({ done: true }))
