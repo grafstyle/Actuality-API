@@ -41,10 +41,14 @@ export async function getUsers(data) {
  */
 export async function addUser(data) {
   return new Promise((res, rej) => {
-    let lastID = async () => await getLastUserID();
     if (data == undefined || Object.keys(data).length == 0)
       rej("The data is empty or undefined.");
-    if (data["id"] == undefined || data["id"] < 0) data["id"] = lastID + 1;
+    if (data["id"] == undefined || data["id"] < 0)
+      getLastUserID()
+        .then((id) => {
+          data["id"] = id + 1;
+        })
+        .catch((err) => rej(err));
     table
       .insertOne(data)
       .then(() => res({ done: true }))
