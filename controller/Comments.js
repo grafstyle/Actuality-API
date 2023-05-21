@@ -41,15 +41,16 @@ export async function getComments(data) {
  */
 export async function addComment(data) {
   return new Promise((res, rej) => {
-    let lastID = getLastCommentID();
     if (data == undefined || Object.keys(data).length == 0)
       rej("The data is empty or undefined.");
-    if (data["id"] == undefined || data["id"] < 0)
-      data["id"] = async () => (await lastID) + 1;
-    table
-      .insertOne(data)
-      .then(() => res({ done: true }))
-      .catch((err) => rej(err));
+    (async () => {
+      if (data["id"] == undefined || data["id"] < 0)
+        data["id"] = (await getLastCommentID()) + 1;
+      table
+        .insertOne(data)
+        .then(() => res({ done: true }))
+        .catch((err) => rej(err));
+    })();
   });
 }
 
