@@ -45,7 +45,7 @@ app.router.post("/users", (req, res) => {
 });
 
 app.router.put("/users/put", async (req, res) => {
-  res.send(await updateUser(App.getParamsOfURL(req)));
+  res.send(await updateUser(App.getParamsOfURL(req).id, req.body));
   res.end();
 });
 
@@ -74,7 +74,7 @@ app.router.post("/posts", (req, res) => {
 });
 
 app.router.put("/posts/put", async (req, res) => {
-  res.send(await updatePost(App.getParamsOfURL(req)));
+  res.send(await updatePost(App.getParamsOfURL(req).id, req.body));
   res.end();
 });
 
@@ -102,7 +102,7 @@ app.router.post("/comments", (req, res) => {
 });
 
 app.router.put("/comments/put", async (req, res) => {
-  res.send(await updateComment(App.getParamsOfURL(req)));
+  res.send(await updateComment(App.getParamsOfURL(req).id, req.body));
   res.end();
 });
 
@@ -130,7 +130,7 @@ app.router.post("/likes", (req, res) => {
 });
 
 app.router.put("/likes/put", async (req, res) => {
-  res.send(await updateLike(App.getParamsOfURL(req)));
+  res.send(await updateLike(App.getParamsOfURL(req).id, req.body));
   res.end();
 });
 
