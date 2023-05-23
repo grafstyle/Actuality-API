@@ -107,7 +107,8 @@ export class App {
    */
   deleteImage(url, func) {
     this.router.delete(url, async (req, res) => {
-      if (req.body.url != undefined) res.send(await func(req.body));
+      const params = App.getParamsOfURL(req);
+      if (params.url != undefined) res.send(await func(params.url));
       else res.send({ error: "Url is missing" });
       res.end();
     });
