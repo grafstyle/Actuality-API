@@ -34,8 +34,14 @@ function getDirAndName(url) {
   let fileAndDir;
   if (url.includes(completeURL)) {
     url = url.replace(completeURL, "");
-    const dirs = url.split("/")[1];
-    fileAndDir = dirs.split(".")[0];
+    let dirs = url.split("/");
+    dirs = dirs.splice(1, dirs.length);
+    let dirStr = "";
+    dirs.forEach((dir, i) => {
+      if (i == 0) dirStr += dir;
+      else dirStr += "/" + dir;
+    });
+    fileAndDir = dirStr.split(".")[0];
   } else fileAndDir = url.split(".")[0];
   return fileAndDir;
 }
