@@ -43,14 +43,19 @@ export async function addUser(data) {
   return new Promise((res, rej) => {
     if (data == undefined || Object.keys(data).length == 0)
       rej("The data is empty or undefined.");
-    (async () => {
-      if (data["id"] == undefined || data["id"] < 0)
-        data["id"] = (await getLastUserID()) + 1;
-      table
-        .insertOne(data)
-        .then(() => res({ done: true }))
-        .catch((err) => rej(err));
-    })();
+    table.findOne({ email: data.email }).then((doc) => {
+      if (doc != undefined) res("The user is already in the database.");
+      else {
+        (async () => {
+          if (data["id"] == undefined || data["id"] < 0)
+            data["id"] = (await getLastUserID()) + 1;
+          table
+            .insertOne(data)
+            .then(() => res({ done: true }))
+            .catch((err) => rej(err));
+        })();
+      }
+    });
   });
 }
 
