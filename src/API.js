@@ -92,8 +92,12 @@ export class App {
         req.body.name != undefined &&
         req.body.url != undefined
       )
-        res.send(await func(req.body));
-      else res.send({ error: "Image or url is missing." });
+        try {
+          res.send(await func(req.body));
+        } catch (err) {
+          res.status(400).send({ error: err });
+        }
+      else res.status(400).send({ error: "Image, url and name is necessary." });
       res.end();
     });
   }
@@ -108,8 +112,13 @@ export class App {
   deleteImage(url, func) {
     this.router.delete(url, async (req, res) => {
       const params = App.getParamsOfURL(req);
-      if (params.url != undefined) res.send(await func(params.url));
-      else res.send({ error: "Url is missing" });
+      if (params.url != undefined) {
+        try {
+          res.send(await func(params.url));
+        } catch (err) {
+          res.status(400).send({ error: err });
+        }
+      } else res.status(400).send({ error: "Url is missing" });
       res.end();
     });
   }
