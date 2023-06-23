@@ -50,7 +50,7 @@ function getDirAndName(url) {
  * To upload an image.
  * @param { ImageInfo } imageData
  */
-export function addImage(imageData) {
+export function addFile(imageData) {
   return new Promise((res, rej) => {
     cloudinary.uploader
       .upload(imageData.image, {
@@ -59,6 +59,7 @@ export function addImage(imageData) {
         overwrite: true,
         filename_override: imageData.name,
         folder: imageData.url,
+        resource_type: "auto",
       })
       .then((done) => res(done))
       .catch((err) => rej(err));
@@ -69,13 +70,11 @@ export function addImage(imageData) {
  * To delete an image.
  * @param { string } url
  */
-export function deleteImage(url) {
+export function deleteFile(url) {
   return new Promise((res, rej) => {
     cloudinary.uploader
       .destroy(getDirAndName(url))
       .then((done) => res(done))
-      .then((err) => {
-        rej(err);
-      });
+      .catch((err) => rej(err));
   });
 }
