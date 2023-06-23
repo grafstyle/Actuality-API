@@ -143,5 +143,5 @@ app.router.delete("/likes/delete", async (req, res) => {
 
 // Adding the url's to post of cloudinary and config it.
 cloudinary.config();
-app.postImage("/new/file", cloudinary.addImage);
-app.deleteImage("/delete/file", cloudinary.deleteImage);
+app.postImage("/new/file", cloudinary.addFile);
+app.deleteImage("/delete/file", cloudinary.deleteFile);
