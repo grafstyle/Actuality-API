@@ -2,6 +2,8 @@
 
 // All imports.
 import { connect } from "../src/DB.js";
+import { deleteComment, getComments } from "./Comments.js";
+import { deleteLike, getLikes } from "./Likes.js";
 
 /**
  * Current collection getted.
@@ -80,7 +82,16 @@ export async function deletePost(idToDelete) {
   return new Promise((res, rej) => {
     table
       .deleteOne({ id: idToDelete })
-      .then(() => res({ done: true }))
+      .then(async () => {
+        const likes = await getLikes({ id_post: idToDelete });
+        const comments = await getComments({ id_post: idToDelete });
+
+        for (const like of likes) deleteLike(like.id);
+
+        for (const comment of comments) deleteComment(comment.id);
+
+        res({ done: true });
+      })
       .catch((err) => rej(err));
   });
 }
