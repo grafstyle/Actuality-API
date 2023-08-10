@@ -26,6 +26,7 @@
     "eslint": "^8.37.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
+    "nodemon": "^3.0.1",
     "prettier": "^2.8.7"
   },
   "lint-staged": {

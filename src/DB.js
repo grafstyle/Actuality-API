@@ -9,6 +9,6 @@ import { MongoClient } from "mongodb";
  */
 export function connect() {
   return new MongoClient(
-    "mongodb://osmaldym:1234@localhost:27017/Actuality?authSource=admin"
+    "mongodb+srv://root:XUmRpTzNpm4ZcZMS@actualitycluster.3eyco0v.mongodb.net/Actuality?retryWrites=true&w=majority"
   ).db();
 }
