@@ -1,14 +1,15 @@
 "use strict"; // Using strict.
 
-// Import of MongoDB.
+// All imports
 import { MongoClient } from "mongodb";
+import * as dotenv from "dotenv";
 
 /**
  * To connect to mongo.
  * @returns database connection.
  */
 export function connect() {
-  return new MongoClient(
-    "mongodb://osmaldym:1234@localhost:27017/Actuality?authSource=admin"
-  ).db();
+  dotenv.config();
+
+  return new MongoClient(process.env.DB_CONNECTION).db();
 }
