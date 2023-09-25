@@ -18,9 +18,9 @@ export function config() {
   dontenv.config();
 
   cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: SECRET.CLOUD_NAME,
+    api_key: SECRET.CLOUDINARY_API_KEY,
+    api_secret: SECRET.CLOUDINARY_API_SECRET,
     secure: true,
   });
 }
@@ -30,7 +30,7 @@ export function config() {
  * @param { string } url
  */
 function getDirAndName(url) {
-  const completeURL = `https://res.cloudinary.com/${process.env.CLOUD_NAME}/image/upload/`;
+  const completeURL = `https://res.cloudinary.com/${SECRET.CLOUD_NAME}/image/upload/`;
   let fileAndDir;
   if (url.includes(completeURL)) {
     url = url.replace(completeURL, "");
