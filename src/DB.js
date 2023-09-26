@@ -11,5 +11,5 @@ import * as dotenv from "dotenv";
 export function connect() {
   dotenv.config();
 
-  return new MongoClient(SECRET.DB_CONNECTION).db();
+  return new MongoClient(${{secrets.DB_CONNECTION}}).db();
 }
