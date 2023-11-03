@@ -8,22 +8,6 @@ on:
     branches: [master]
 
 jobs:
-  create-env:
-    name: 'Create env file'
-    runs-on: ubuntu-latest
-    steps:
-    - name: 'add secrets'
-      run: |
-            touch .env
-            echo "CLOUD_NAME=${{ secrets.CLOUD_NAME }}" >> .env
-            echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env
-            echo "CLOUDINARY_API_SECRETY=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env
-            echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> .env
-            cat .env
-
-
-
-
   verification:
     name: Code verification
 
@@ -60,8 +44,14 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Generate Deployment Package
-        run: zip -r deploy.zip . -x '*.git*'
+      - name: Generate Deployment Package & .env file
+        run: |
+            touch .env
+            echo "CLOUD_NAME=${{ secrets.CLOUD_NAME }}" >> .env
+            echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env
+            echo "CLOUDINARY_API_SECRETY=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env
+            echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> .env
+            zip -r deploy.zip . -v -x '*.git*'
 
       - name: Get timestamp
         uses: gerred/actions/current-time@master
