@@ -18,6 +18,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo CLOUD_NAME=${{ secrets.CLOUD_NAME }} >> .env
+          echo CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} >> .env
+          echo CLOUDINARY_API_SECRETY=${{ secrets.CLOUDINARY_API_SECRET }} >> .env
+          echo DB_CONNECTION=${{ secrets.DB_CONNECTION }} >> .env
+
+
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
@@ -31,6 +40,8 @@ jobs:
           VALIDATE_CSS: true
           VALIDATE_JAVASCRIPT_ES: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  
 
   deploy:
     name: Deploy to AWS
