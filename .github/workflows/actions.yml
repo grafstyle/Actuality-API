@@ -8,6 +8,22 @@ on:
     branches: [master]
 
 jobs:
+  create-env:
+    name: 'Create env file'
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'add secrets'
+      run: |
+            touch .env
+            echo "CLOUD_NAME=${{ secrets.CLOUD_NAME }}" >> .env
+            echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env
+            echo "CLOUDINARY_API_SECRETY=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env
+            echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> .env
+            cat .env
+
+
+
+
   verification:
     name: Code verification
 
@@ -18,14 +34,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 'Create env file'
-        run: 
-          touch .env
-          echo "CLOUD_NAME=${{ secrets.CLOUD_NAME }}" > .env
-          echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" > .env
-          echo "CLOUDINARY_API_SECRETY=${{ secrets.CLOUDINARY_API_SECRET }}" > .env
-          echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" > .env
-          cat .env
 
 
       - name: Lint Code Base
