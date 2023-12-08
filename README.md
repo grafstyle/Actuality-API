@@ -1,6 +1,6 @@
 # Actuality - API
 
-Brief description of your API.
+The [Actuality] API is a versatile platform that enables users to perform Create (POST), Read (GET), Update (PUT), and Delete (DELETE) operations efficiently. It offers seamless interaction with data through various HTTP methods, allowing users to manage resources effortlessly.
 
 ## Installation
 
@@ -21,9 +21,6 @@ Explain how to use your API, including endpoints, request methods, parameters, a
 - `Endpoint 2`: Description
 - ...
 
-## Authentication
-
-No Authentication needed 🔓
 
 ## Examples
 
