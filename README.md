@@ -18,20 +18,6 @@ The [Actuality] API is a versatile platform that enables users to perform Create
 - <b>Update (PUT)</b>: Modify or update existing data/resources.
 - <b>Delete (DELETE)</b>: Remove unwanted data or resources.
   
-### Endpoints
-
-- `Endpoint 1`: Description
-- `Endpoint 2`: Description
-- ...
-
-
-## Examples
-
-Provide examples of requests and responses to illustrate how the API works.
-
-## Error Handling
-
-Explain how errors and exceptions are handled by your API.
 
 ## Contributing
 
