@@ -4,7 +4,7 @@ Brief description of your API.
 
 ## Installation
 
-*Clone the repository: git clone https://github.com/grafstyle/Actuality-API.git
+1. Clone the repository: `git clone https://github.com/grafstyle/Actuality-API.git`
 2. Install dependencies: `npm install`
 3. Configure the database and environment variables. (You will need a <a href="https://cloudinary.com/">Cloudinary</a> & a <a href="https://www.mongodb.com/atlas/database">MongoDB Atlas account).
 4. Start the server: `npm run serve`
