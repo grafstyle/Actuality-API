@@ -11,9 +11,9 @@ The [Actuality] API is a versatile platform that enables users to perform Create
 5. Open the app in your browser at http://localhost:3500
 
 
-## Usage
+## Key Features
 
-- <b>Create (POST)</b>: Easily add new data or resources to the system.
+- <b>Create (POST)</b>: Easily add new data or resources to the database.
 - <b>Read (GET)</b>: Retrieve existing data/resources from the API.
 - <b>Update (PUT)</b>: Modify or update existing data/resources.
 - <b>Delete (DELETE)</b>: Remove unwanted data or resources.
