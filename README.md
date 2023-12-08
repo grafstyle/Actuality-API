@@ -13,8 +13,11 @@ The [Actuality] API is a versatile platform that enables users to perform Create
 
 ## Usage
 
-Explain how to use your API, including endpoints, request methods, parameters, authentication, and examples.
-
+- <b>Create (POST)</b>: Easily add new data or resources to the system.
+- <b>Read (GET)</b>: Retrieve existing data/resources from the API.
+- <b>Update (PUT)</b>: Modify or update existing data/resources.
+- <b>Delete (DELETE)</b>: Remove unwanted data or resources.
+  
 ### Endpoints
 
 - `Endpoint 1`: Description
