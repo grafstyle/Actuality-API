@@ -1,0 +1,55 @@
+steps:
+  - name: '${LOCATION}-docker.pkg.dev/${PROJECT_ID}/community-builders/envsubst'
+    env:
+      - 'SERVICE_NAME=${_SERVICE_NAME}'
+      - >-
+        IMAGE="${LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPOSITORY_NAME}/${_SERVICE_NAME}:${BUILD_ID}"
+      - 'SERVICE_ACCOUNT=${_SERVICE_ACCOUNT}'
+      - 'CPU=${_CPU}'
+      - 'REGION=${_LOCATION}'
+      - 'MEMORY_GB=${_MEMORY_GB}'
+      - 'DISK_SIZE_GB=${_DISK_SIZE_GB}'
+      - 'MIN_IDLE_INSTANCES=${_MIN_IDLE_INSTANCES}'
+      - 'MAX_IDLE_INSTANCES=${_MAX_IDLE_INSTANCES}'
+      - 'VPC_SUBNETWORK=${_VPC_SUBNETWORK}'
+      - 'VPC_NETWORK=${_VPC_NETWORK}'
+      - 'VPC_ACCESS_EGRESS=${_VPC_ACCESS_EGRESS}'
+      - 'VPC_ACCESS_CONNECTOR=${_VPC_ACCESS_CONNECTOR}'
+    args:
+      - app.yaml
+  - name: bash
+    script: cat app.yaml
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    args:
+      - '-c'
+      - gcloud app deploy
+    entrypoint: bash
+timeout: 1800s
+logsBucket: 'gs://cloud-build-logs-cic-ptd-dev'
+options:
+  logging: GCS_ONLY
+  dynamicSubstitutions: true
+serviceAccount: '${_SERVICE_ACCOUNT}'
+
+
+/////////////////////////////
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - >-
+        ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPOSITORY_NAME}/${_SERVICE_NAME}:${BUILD_ID}
+      - .
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - >-
+        ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPOSITORY_NAME}/${_SERVICE_NAME}:${BUILD_ID}
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    args:
+      - '-c'
+      - >-
+        gcloud app describe --quiet --format=json > /dev/null || echo "Error in
+        app.yaml"
+    entrypoint: bash

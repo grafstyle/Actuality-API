@@ -1,0 +1,35 @@
+steps:
+  - name: ubuntu
+    env:
+      - 'SERVICE_NAME=${_SERVICE_NAME}'
+      - 'SERVICE_ACCOUNT=${_SERVICE_ACCOUNT}'
+      - 'CPU=${_CPU}'
+      - 'MEMORY_GB=${_MEMORY_GB}'
+      - 'DISK_SIZE_GB=${_DISK_SIZE_GB}'
+      - 'MIN_IDLE_INSTANCES=${_MIN_IDLE_INSTANCES}'
+      - 'MAX_IDLE_INSTANCES=${_MAX_IDLE_INSTANCES}'
+    args:
+      - '-c'
+      - |
+        apt-get update && \
+        apt-get install -y gettext && \
+        echo "Variables de entorno disponibles:" && env && \
+        echo "Archivo app.yaml original:" && cat app.yaml && \
+        echo "Procesando variables de entorno con envsubst..." && \
+        envsubst < app.yaml > app.yaml.processed && \
+        mv app.yaml.processed app.yaml && \
+        echo "Contenido final de app.yaml:" && cat app.yaml
+    entrypoint: bash
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    args:
+      - '-c'
+      - |
+        gcloud config set app/cloud_build_timeout 1600 && \
+        gcloud app deploy app.yaml --quiet || \
+        { echo "Error: El despliegue falló."; exit 1;}
+    entrypoint: bash
+timeout: 1600s
+logsBucket: 'gs://cloud-build-logs-cic-ptd-dev'
+options:
+  logging: GCS_ONLY
+serviceAccount: '${_SERVICE_ACCOUNT}'
