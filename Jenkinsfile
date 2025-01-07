@@ -19,11 +19,13 @@
 // }
 
 pipeline {
+  agent {
+        node(label: 'thebrain')
+  }
   environment {
     dockerimagename = "actuality-app"
     dockerImage = ""
   }
-  agent any
   stages {
     stage('Checkout Source') {
       steps {
@@ -37,18 +39,18 @@ pipeline {
         }
       }
     }
-    stage('Pushing Image') {
-      environment {
-          registryCredential = 'dockerhub-credentials'
-           }
-      steps{
-        script {
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
-          }
-        }
-      }
-    }
+    // stage('Pushing Image') {
+    //   environment {
+    //       registryCredential = 'dockerhub-credentials'
+    //        }
+    //   steps{
+    //     script {
+    //       docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+    //         dockerImage.push("latest")
+    //       }
+    //     }
+    //   }
+    // }
     stage('Deploying React.js container to Kubernetes') {
       steps {
         script {
