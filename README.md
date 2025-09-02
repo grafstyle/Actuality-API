@@ -26,3 +26,6 @@ Please get in touch with us through email omaldonado@cincinnatus.edu.do
 ## License
 
 Specify the license under which your API is distributed.
+
+
+<!-- Security scan triggered at 2025-09-02 16:07:26 -->
